@@ -1,0 +1,8 @@
+[ $token '~example.drone.*' { 'type' 'captor.time' } NOW -1000 ] FETCH
+[
+  SWAP
+  bucketizer.mean
+  0               // lastbucket
+  0               // bucketspan
+  1               // bucketcount
+] BUCKETIZE // Synchronises the ticks

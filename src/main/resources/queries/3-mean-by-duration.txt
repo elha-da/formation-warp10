@@ -1,0 +1,16 @@
+[ $token '~example.drone.*' { 'type' 'captor.time' } NOW -1000 ] FETCH
+'gts' STORE
+
+// Get the last tick of the first captor
+$gts 0 GET
+LASTTICK
+'lasttick' STORE
+
+// Compute the mean for a duration of 120 seconds
+[
+  $gts
+  bucketizer.mean
+  $lasttick       // lastbucket
+  120 STU *       // bucketspan
+  0               // bucketcount
+] BUCKETIZE

@@ -1,0 +1,30 @@
+[ $token '~example.drone.*' { 'type' 'gps.state'  } NOW -1000 ] FETCH
+'gts' STORE
+
+// Get the last tick of the first captor
+$gts 0 GET
+LASTTICK
+'lasttick' STORE
+
+// Bucketize per timestamp
+[
+  $gts
+  bucketizer.max
+  $lasttick      // lastbucket
+  STU            // bucketspan
+  0              // bucketcount
+] BUCKETIZE
+'bucketized_gts' STORE
+
+//
+[
+  $bucketized_gts
+  'POLYGON((-4.539472 48.415777,-4.539472 48.315777,-4.439472 48.315777,-4.439472 48.415777, -4.539472 48.415777))' // Zone
+  0.1                                                                                                               // Error percent
+  true                                                                                                              // Inside
+  GEO.WKT                                                                                                           // Create geo object
+
+  mapper.geo.within // Filter values to keep ones inside previous GEO.WKT object
+  0 0 0             // Sliding window of 1 (0 pre and 0 post), no options
+]
+MAP // apply a function on values that fall into a sliding window

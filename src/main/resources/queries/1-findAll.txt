@@ -1,0 +1,1 @@
+[ $token '~example.drone.*' { 'source' 'example' } NOW -100 ] FETCH

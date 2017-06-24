@@ -1,0 +1,21 @@
+[ $token '~example.drone.*' { 'type' 'gps.state'  } NOW -1000 ] FETCH
+'gts' STORE
+
+
+// Get the last tick of the first captor
+$gts 0 GET
+LASTTICK
+'lasttick' STORE
+
+// Bucketize per timestamp
+[
+  $gts
+  bucketizer.max
+  $lasttick      // lastbucket
+  STU            // bucketspan
+  0              // bucketcount
+] BUCKETIZE
+'bucketized_gts' STORE
+
+// Count the number of captor per timestamp
+[ $bucketized_gts [] op.add ] APPLY
