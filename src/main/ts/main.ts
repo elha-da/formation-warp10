@@ -10,6 +10,8 @@ import * as actions from "./page/actions";
 import page from "./page/page";
 import scanBarcode from "./sensors/barcode";
 import {Observable} from "kaiju/observable";
+import {getCurrentPosition} from "./sensors/geo";
+import {Magasin} from "./model";
 
 interface Props {
   key: ""
@@ -30,6 +32,17 @@ const app = (() => {
       const observable = Observable.fromPromise(scanBarcode().then(api.findProduct))
       on(observable, (state, result) => {
         result.map(product => store.send(actions.addProduct(product)))
+      })
+      return state
+    })
+
+    on(actions.getResult, (state) => {
+      const promise: Promise<Array<Magasin>> = getCurrentPosition().then(coordinates =>
+        api.lowerPriceNear(state.articles[0].barcode, coordinates.lat, coordinates.lon)
+      )
+      const observable = Observable.fromPromise(promise)
+      on(observable, (state, observable) => {
+        observable.map((magasins: Array<Magasin>) => store.send(actions.showResult(magasins)))
       })
       return state
     })

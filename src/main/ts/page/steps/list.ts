@@ -1,6 +1,6 @@
-import {h} from "kaiju"
-import {State} from "../store"
-import {scanBarcode} from "../actions"
+import {h} from "kaiju";
+import {State} from "../store";
+import {getResult, scanBarcode} from "../actions";
 
 export default function (state: State) {
   return h("div", [
@@ -10,7 +10,6 @@ export default function (state: State) {
 }
 
 function renderArticles(state: State) {
-  console.log(state.articles)
   return h("ul", state.articles.map(article =>
     h("li", article.name)
   ));
@@ -19,6 +18,6 @@ function renderArticles(state: State) {
 function renderButtons() {
   return h("div", [
     h("button", { events: { click: scanBarcode } }, "Scanner un article"),
-    h("button", "Terminer")
+    h("button", { events: { click: getResult } }, "Terminer")
   ])
 }
