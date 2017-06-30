@@ -3,3 +3,5 @@
 /target
 /project/target
 /src/main/resources/local.conf
+/src/main/resources/front
+/node_modules

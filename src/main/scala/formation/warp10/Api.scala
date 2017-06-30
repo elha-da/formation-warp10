@@ -9,6 +9,8 @@ trait Api {
 
   def allProducts(): Seq[Product]
 
+  def findProduct(barcode: String): Option[Product]
+
   def searchMagasinByProduct(productSearchMagasinFilter: ProductSearchMagasinFilter): Seq[ProductSearchMagasinResult]
 
   def productEvolution(productId: String): ProductPriceEvolution

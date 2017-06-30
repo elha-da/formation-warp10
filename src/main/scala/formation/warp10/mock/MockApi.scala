@@ -16,8 +16,11 @@ class MockApi extends Api {
   override def allProducts(): Seq[warp10.Product] = Seq(
     Product("x", "Bouteille d'eau"),
     Product("y", "Café"),
-    Product("z", "Thé")
+    Product("z", "Thé"),
+    Product("3124480183811", "Oasis Tropical")
   )
+
+  override def findProduct(barcode: String): Option[Product] = allProducts().find(_.id == barcode)
 
   override def searchMagasinByProduct(productSearchMagasinFilter: ProductSearchMagasinFilter): Seq[ProductSearchMagasinResult] = Seq(
     ProductSearchMagasinResult(Magasin("a", "Auchan Nantes St-Nazaire", Coordinates(47.3015, -2.209280000000035)), 20),

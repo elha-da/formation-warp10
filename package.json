@@ -1,0 +1,25 @@
+{
+  "name": "formation.warp10",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "immupdate": "^1.1.1",
+    "kaiju": "^0.26.0",
+    "quagga": "^0.12.1",
+    "snabbdom": "0.6.5",
+    "source-map-loader": "^0.1.6"
+  },
+  "devDependencies": {
+    "ts-loader": "^2.0.1",
+    "typescript": "^2.2.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1"
+  },
+  "scripts": {
+    "serve": "webpack-dev-server",
+    "build": "webpack",
+    "watch": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
