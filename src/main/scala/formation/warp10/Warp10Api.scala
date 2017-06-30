@@ -14,15 +14,8 @@ class Warp10Api(configuration: Configuration)(implicit warp10configuration: Warp
 
   val w10client = Warp10Client(configuration.host, configuration.port)
 
-  def push(time: Long): Unit = {
-    Source.single(GTS(
-      ts = Some(time),
-      coordinates = None,
-      elev = None,
-      name = "org.test.plain.string",
-      labels = Map("label1" -> "dsfF3", "label2" -> "dsfg"),
-      value = GTSBooleanValue(true)
-    ))
+  def push(gts: GTS): Unit = {
+    Source.single(gts)
       .via(w10client.push)
       .runWith(Sink.foreach(println))
       .onComplete {
