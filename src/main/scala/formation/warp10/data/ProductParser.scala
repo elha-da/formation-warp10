@@ -8,7 +8,7 @@ import formation.warp10.utils.{CollectionUtils, NumberUtils}
 object ProductParser {
   def load(directoryPath: Path): Seq[Product] = {
     CollectionUtils.scalaSeq(Files.list(directoryPath))
-      .filter(_.endsWith(".csv"))
+      .filter(_.getFileName.toString.endsWith(".csv"))
       .flatMap(loadFile)
   }
 

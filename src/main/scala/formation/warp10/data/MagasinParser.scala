@@ -10,7 +10,7 @@ import kneelnrise.warp10scala.model.Coordinates
 object MagasinParser {
   def load(directoryPath: Path): Seq[Magasin] = {
     CollectionUtils.scalaSeq(Files.list(directoryPath))
-      .filter(_.endsWith(".csv"))
+      .filter(_.getFileName.toString.endsWith(".csv"))
       .flatMap(loadFile)
   }
 
