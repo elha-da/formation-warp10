@@ -15,6 +15,7 @@ libraryDependencies += "ch.megard" %% "akka-http-cors" % "0.1.10"
 lazy val copyHtml = TaskKey[Unit]("copyHtml", "Copy html files into front directory")
 
 copyHtml := {
+  streams.value.log.info("Copy html")
   Paths.get("src/main/html").toFile.listFiles()
     .foreach(file => Files.copy(file.toPath, Paths.get("src/main/resources/front", file.name), StandardCopyOption.REPLACE_EXISTING))
 }
@@ -22,6 +23,7 @@ copyHtml := {
 lazy val copyCss = TaskKey[Unit]("copyCss", "Copy css files into front directory")
 
 copyCss := {
+  streams.value.log.info("Copy css")
   Paths.get("src/main/css").toFile.listFiles()
     .foreach(file => Files.copy(file.toPath, Paths.get("src/main/resources/front", file.name), StandardCopyOption.REPLACE_EXISTING))
 }
@@ -38,4 +40,5 @@ buildClient := {
   "npm run build".!
 }
 
+buildClient <<= buildClient.dependsOn(copyHtml, copyCss)
 compile in Compile <<= (compile in Compile).dependsOn(buildClient)
