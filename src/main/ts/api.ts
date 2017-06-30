@@ -1,4 +1,4 @@
-import {Magasin, MagasinWithPrice, Product} from "./model";
+import {MagasinWithPrice, Product} from "./model";
 import {request} from "./utils/http";
 
 const baseUrl = "http://localhost:9000"
