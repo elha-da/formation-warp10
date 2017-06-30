@@ -12,7 +12,7 @@ class Configuration {
 
   lazy val magasinStorageDirectory: Path = Paths.get("src", "main", "resources", "data", "magasins")
 
-  lazy val productsStorageDirectory: Path = Paths.get("src", "main", "resources", "data", "magasins")
+  lazy val productsStorageDirectory: Path = Paths.get("src", "main", "resources", "data", "products")
 
   lazy val readToken: String = config.getString("formation.warp10.tokens.read")
 
