@@ -19,7 +19,7 @@ class ProductWarp10(magasinStorage: MagasinStorage, warp10Api: Warp10Api, config
 
   def generateGTSEntries(product: Product): Seq[GTS] = {
     magasinStorage.findAll().flatMap { magasin =>
-      (1 to 360).map { i =>
+      (1 to 5).map { i =>
         val time = configuration.nowAtOneTime + (i * 86400)
         productToGTS(product, time, magasin)
       }
@@ -31,7 +31,7 @@ class ProductWarp10(magasinStorage: MagasinStorage, warp10Api: Warp10Api, config
       ts = Some(time),
       coordinates = Some(magasin.coordinates),
       elev = None,
-      name = "org.test.plain.store",
+      name = "org.test.plain.product",
       labels = Map("productId" -> product.id, "storeId" -> magasin.id),
       value = GTSDoubleValue(randomPrice(product).toDouble)
     )
