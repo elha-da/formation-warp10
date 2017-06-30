@@ -14,6 +14,16 @@ class Warp10Api(configuration: Configuration)(implicit warp10configuration: Warp
 
   val w10client = Warp10Client(configuration.host, configuration.port)
 
+  def pushAll(gts: Seq[GTS]): Unit = {
+    Source.fromIterator(() => gts.iterator)
+      .via(w10client.push)
+      .runWith(Sink.foreach(println))
+      .onComplete {
+        case Success(x) => println("Done: " + x)
+        case Failure(x) => println("Failure: " + x)
+      }
+  }
+
   def push(gts: GTS): Unit = {
     Source.single(gts)
       .via(w10client.push)

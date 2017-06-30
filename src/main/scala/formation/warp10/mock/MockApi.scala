@@ -14,10 +14,10 @@ class MockApi extends Api {
   )
 
   override def allProducts(): Seq[warp10.Product] = Seq(
-    Product("x", "Bouteille d'eau"),
-    Product("y", "Café"),
-    Product("z", "Thé"),
-    Product("3124480183811", "Oasis Tropical")
+    Product("x", "Bouteille d'eau", 0.1),
+    Product("y", "Café", 1.25),
+    Product("z", "Thé", 1.15),
+    Product("3124480183811", "Oasis Tropical", 2.3)
   )
 
   override def findProduct(barcode: String): Option[Product] = allProducts().find(_.id == barcode)

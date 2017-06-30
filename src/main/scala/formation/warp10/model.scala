@@ -24,11 +24,12 @@ object Magasin extends DefaultJsonProtocol {
 
 case class Product(
   id: String,
-  name: String
+  name: String,
+  referencePrice: BigDecimal
 )
 
 object Product extends DefaultJsonProtocol {
-  implicit val impFormat = jsonFormat2(Product.apply)
+  implicit val impFormat = jsonFormat3(Product.apply)
 }
 
 case class ProductSearchMagasinFilter(
