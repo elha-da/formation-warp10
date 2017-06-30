@@ -35,4 +35,12 @@ class MockApi extends Api {
       ProductPriceEvolutionEntry(LocalDateTime.parse("2017-01-06T00:00:00"), 17.99)
     )
   )
+
+  override def nearestMagasin(coordinates: Coordinates): Magasin = {
+    Magasin("a", "Auchan Nantes St-Nazaire", Coordinates(47.3015, -2.209280000000035))
+  }
+
+  override def updateProductPrice(productId: String, price: BigDecimal): Unit = {
+
+  }
 }

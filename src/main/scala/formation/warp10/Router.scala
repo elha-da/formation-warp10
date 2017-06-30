@@ -6,8 +6,10 @@ import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import formation.warp10.utils.NumberUtils
 import kneelnrise.warp10scala.model.Coordinates
+import spray.json.{DefaultJsonProtocol, JsNumber, JsValue}
 
-class Router(api: Api) extends SprayJsonSupport {
+class Router(api: Api) extends SprayJsonSupport with DefaultJsonProtocol {
+  import akka.http.scaladsl.unmarshalling.Unmarshaller._
   val route: Route = {
     pathEndOrSingleSlash {
       get {
@@ -21,7 +23,19 @@ class Router(api: Api) extends SprayJsonSupport {
               ctx.complete(StatusCodes.OK, api.allMagasins(httpParametersToMagasinFilter(parameters)))
           }
         }
-      }
+      } ~
+        path("nearest") {
+          get {
+            parameterMap { parameters =>
+              ctx =>
+                httpParametersToCoordinatesOpt(parameters).map { coordinates =>
+                  ctx.complete(StatusCodes.OK, api.nearestMagasin(coordinates))
+                } getOrElse {
+                  ctx.complete(StatusCodes.BadRequest, "Please provide coordinates (lat, lon)")
+                }
+            }
+          }
+        }
     } ~ pathPrefix("products") {
       pathEndOrSingleSlash {
         get { ctx =>
@@ -40,6 +54,19 @@ class Router(api: Api) extends SprayJsonSupport {
           } ~ path("evolution") {
             get { ctx =>
               ctx.complete(StatusCodes.OK, api.productEvolution(productId))
+            }
+          } ~ path("newPrice") {
+            post {
+              entity(as[JsValue]) { price =>
+                ctx =>
+                  price match {
+                    case JsNumber(value) =>
+                      api.updateProductPrice(productId, value)
+                      ctx.complete(StatusCodes.OK, "done")
+                    case _ =>
+                      ctx.complete(StatusCodes.BadRequest, "invalid number")
+                  }
+              }
             }
           }
         }
